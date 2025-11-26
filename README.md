@@ -103,7 +103,7 @@ Game-UI-Collection/
   <h3>Vinícius Montuani</h3>
 
   <p>
-    <em>Estudante de Desenvolvimento de Sistemas @ SENAI | Entusiasta em Cibersegurança & Desenvolvimento de Jogos.</em>
+    <em>Estudante de Desenvolvimento de Sistemas @ SENAI</em>
   </p>
 
   <br />
