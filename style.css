@@ -1,0 +1,338 @@
+:root {
+  /* Paleta baseada na imagem de referência */
+  --crt-bg: #18122B; /* Azul escuro/roxo */
+  --grid-line: rgba(74, 78, 105, 0.5);
+  --text-gold: #ffcc00;
+  --text-orange: #ff6600;
+  --neon-blue: #00f0ff;
+  --scanline-col: rgba(0, 0, 0, 0.5);
+  --glass-tint: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.4) 80%, rgba(0,0,0,0.9) 100%);
+}
+
+body {
+  background-color: #050505;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Press Start 2P", cursive;
+  user-select: none;
+}
+
+/* =========================================
+   GABINETE & ESTRUTURA
+   ========================================= */
+.cabinet-frame {
+  width: 90vh;
+  height: 90vh;
+  max-width: 800px;
+  max-height: 700px;
+  background: #111;
+  padding: 20px;
+  border-radius: 40px;
+  box-shadow: 
+    0 0 0 10px #222,
+    0 0 60px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+/* Moldura interna curvada */
+.screen-bezel {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 100px / 40px; /* Curvatura estilo TV antiga */
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(255,255,255,0.05);
+}
+
+/* =========================================
+   CONTEÚDO DA TELA (UI)
+   ========================================= */
+.screen-content {
+  width: 100%;
+  height: 100%;
+  background-color: var(--crt-bg);
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  box-sizing: border-box;
+  
+  /* Efeito de ligar TV */
+  animation: turn-on 3s ease-out forwards;
+}
+
+/* Fundo Grid 3D */
+.retro-grid {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: 
+    linear-gradient(transparent 0%, rgba(85, 29, 152, 0.4) 100%),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(0deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 40px 40px;
+  transform: perspective(300px) rotateX(20deg) scale(1.5);
+  transform-origin: bottom;
+  animation: grid-scroll 20s linear infinite;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+/* HUD Superior */
+.hud-top {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  text-shadow: 2px 2px 0px #ff00de;
+  font-size: 12px;
+  z-index: 20;
+}
+.score-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.score-block.center { align-items: center; color: var(--text-gold); text-shadow: 2px 2px 0 #b83612; }
+.score-val { color: #fff; }
+
+/* Menu Principal */
+.main-menu {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+/* Logo "START GAME" estilizado como na imagem */
+.game-logo {
+  font-size: 42px;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, #ffcc00 40%, #ff6600 60%);
+  -webkit-background-clip: text;
+  color: transparent;
+  /* Borda simulada com drop-shadow */
+  filter: drop-shadow(4px 4px 0px #800000);
+  position: relative;
+  letter-spacing: 4px;
+}
+/* Efeito de brilho no logo */
+.game-logo::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(to bottom, transparent 45%, rgba(255,255,255,0.8) 50%, transparent 55%);
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 100% 200%;
+  animation: shine 4s infinite;
+}
+
+/* Lista de Jogos */
+.game-options {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+.option-item {
+  color: #ffaa80;
+  font-size: 14px;
+  margin: 15px 0;
+  padding: 5px;
+  cursor: pointer;
+  transition: 0.1s;
+  text-shadow: 2px 2px 0px #330000;
+  position: relative;
+}
+.option-item.active {
+  color: #ffff00;
+  transform: scale(1.1);
+  text-shadow: 3px 3px 0px #ff0000;
+}
+/* Seta de seleção estilo arcade */
+.option-item.active::before {
+  content: "▶";
+  position: absolute;
+  left: -25px;
+  color: #fff;
+  animation: blink-fast 0.5s infinite;
+}
+
+/* HUD Inferior */
+.hud-bottom {
+  text-align: right;
+  color: #fff;
+  font-size: 12px;
+  text-shadow: 2px 2px 0 #000;
+  z-index: 20;
+}
+
+/* =========================================
+   REFERÊNCIAS (CSS ART & ANIMAÇÕES)
+   ========================================= */
+
+/* 1. Pacman */
+.pac-wrap {
+  position: absolute;
+  top: 70px;
+  left: -50px;
+  display: flex;
+  gap: 30px;
+  animation: run-across 8s linear infinite;
+}
+.pacman {
+  width: 20px; height: 20px;
+  background: #ffff00;
+  border-radius: 50%;
+  clip-path: polygon(100% 0%, 100% 100%, 50% 50%, 0% 100%, 0% 0%);
+  transform: rotate(-90deg);
+}
+.ghost {
+  width: 20px; height: 20px;
+  background: #ff0000;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  box-shadow: -2px -2px inset rgba(0,0,0,0.2);
+}
+.ghost::after {
+  content: ""; position: absolute; bottom: -4px; left: 0; width: 100%; height: 6px;
+  background: inherit;
+  clip-path: polygon(0% 0%, 20% 100%, 40% 0%, 60% 100%, 80% 0%, 100% 100%);
+}
+.ghost::before {
+  content: ""; position: absolute; top: 6px; left: 4px;
+  width: 4px; height: 4px; background: #fff;
+  box-shadow: 8px 0 0 #fff;
+  border-radius: 50%;
+}
+
+.barrel {
+  width: 26px; height: 26px;
+  background: #8B4513;
+  border: 3px solid #CD853F;
+  border-radius: 6px;
+  color: #CD853F;
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 50px; left: -40px;
+  font-family: sans-serif;
+  font-weight: bold;
+  box-shadow: inset 0 0 5px #000;
+  animation: roll-barrel 5s linear infinite;
+}
+
+.centipede-container {
+  position: absolute;
+  right: 40px;
+  top: -50px;
+}
+.c-head, .c-body {
+  width: 12px; height: 12px;
+  background: #00ff00;
+  border-radius: 50%;
+  position: absolute;
+  box-shadow: 1px 1px 0 #004400;
+}
+.c-head { background: #ff0000; z-index: 2; animation: centipede-path 6s linear infinite; }
+.b1 { animation: centipede-path 6s linear 0.15s infinite; }
+.b2 { animation: centipede-path 6s linear 0.3s infinite; }
+.b3 { animation: centipede-path 6s linear 0.45s infinite; }
+
+.screen-glare {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  background: var(--glass-tint);
+  border-radius: 100px / 40px;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: inset 0 0 20px rgba(0,0,0,1);
+}
+
+.scanlines {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.4) 50%,
+    rgba(0,0,0,0.4)
+  );
+  background-size: 100% 4px;
+  z-index: 40;
+  pointer-events: none;
+}
+
+/* Efeito de ruído e flicker */
+.crt-overlay {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  background: rgba(18, 16, 16, 0.1);
+  z-index: 45;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes blink-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+@keyframes flicker {
+  0% { opacity: 0.95; } 5% { opacity: 0.85; } 10% { opacity: 0.95; }
+  15% { opacity: 1; } 100% { opacity: 0.95; }
+}
+
+@keyframes grid-scroll {
+  0% { background-position: 0 0, 0 0, 0 0; }
+  100% { background-position: 0 40px, 0 40px, 0 40px; }
+}
+
+@keyframes shine {
+  0% { background-position: 0% -100%; }
+  20% { background-position: 0% 200%; }
+  100% { background-position: 0% 200%; }
+}
+
+@keyframes run-across {
+  0% { left: -100px; } 100% { left: 110%; }
+}
+@keyframes waka {
+  0% { clip-path: polygon(100% 0%, 100% 100%, 50% 50%, 0% 100%, 0% 0%); }
+  100% { clip-path: polygon(100% 70%, 100% 30%, 50% 50%, 0% 100%, 0% 0%); }
+}
+
+@keyframes roll-barrel {
+  0% { left: -50px; transform: rotate(0deg); }
+  50% { left: 50%; transform: rotate(360deg); }
+  100% { left: 120%; transform: rotate(720deg); }
+}
+
+@keyframes centipede-path {
+  0% { top: -20px; right: 20px; }
+  10% { top: 20px; right: 20px; }
+  15% { top: 20px; right: 60px; }
+  30% { top: 60px; right: 60px; }
+  35% { top: 60px; right: 20px; }
+  50% { top: 100px; right: 20px; }
+  55% { top: 100px; right: 80px; }
+  100% { top: 120%; right: 80px; }
+}
+
+@keyframes turn-on {
+  0% { transform: scale(1, 0.002); opacity: 0; filter: brightness(3); }
+  30% { transform: scale(1, 0.002); opacity: 1; }
+  50% { transform: scale(1, 1); filter: brightness(2); }
+  100% { transform: scale(1, 1); filter: brightness(1); }
+}
+
+@media (max-width: 600px) {
+  .game-logo { font-size: 24px; }
+  .cabinet-frame { width: 95vw; height: 80vh; }
+}

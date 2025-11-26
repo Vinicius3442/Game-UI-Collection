@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rajdhani', sans-serif; }
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+}
+
+/* --- FUNDO E AMBIENTE --- */
+.background-animation {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: url('./assets/img/ocean_bg.gif') no-repeat center center / cover; 
+    opacity: 0.5; z-index: -10;
+}
+
+/* Máscara de Mergulho (Vignette) */
+.diving-mask {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, transparent 60%, black 95%);
+    pointer-events: none; z-index: 50;
+}
+
+/* Tela de Desmaio (Blackout) */
+#blackout-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; opacity: 0; pointer-events: none; z-index: 2000;
+    transition: opacity 3s ease;
+}
+.passed-out #blackout-screen { opacity: 1; pointer-events: all; }
+
+/* Alerta Vermelho */
+#red-alert-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 50%, rgba(255, 0, 0, 0.6) 100%);
+    z-index: 900;
+    opacity: 0; pointer-events: none;
+}
+.critical-state #red-alert-overlay { animation: redPulse 1s infinite; }
+@keyframes redPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
+
+/* ================= PDA CONTAINER ================= */
+.pda-container {
+    display: flex;
+    align-items: center;
+    transform: scale(0.95); 
+    filter: drop-shadow(0 0 20px rgba(0, 200, 255, 0.3));
+    max-height: 95vh;
+    position: relative;  /* Necessário para o z-index funcionar */
+    z-index: 100
+}
+
+/* --- LADO ESQUERDO: GRIP (Parte Branca) --- */
+.pda-grip-section {
+    width: 110px; height: 580px;
+    background: linear-gradient(to right, #e0e0e0, #f5f5f5 40%, #d0d0d0);
+    border-radius: 40px 0 0 40px; position: relative; z-index: 100;
+    box-shadow: inset -5px 0 10px rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center;
+}
+.rubber-grip {
+    width: 70%; height: 70%; background: #2a2a2a;
+    border-radius: 20px 0 0 20px;
+    background-image: radial-gradient(#3a3a3a 15%, transparent 16%);
+    background-size: 6px 6px;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+}
+.button-pill {
+    position: absolute; left: 85%; top: 50%; transform: translate(-50%, -50%);
+    width: 12px; height: 50px; background: #111; border-radius: 10px;
+}
+.cam-lens {
+    position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 20px; height: 20px; background: #111; border-radius: 50%;
+    border: 2px solid #555; box-shadow: 0 0 5px #00faff;
+}
+
+/* --- LADO DIREITO: TELA (Parte Azul - CORRIGIDA A TRANSPARÊNCIA) --- */
+.pda-screen-section {
+    width: 800px; height: 600px;
+    /* VERIFICAR ESTAS PROPRIEDADES PARA A TRANSPARÊNCIA */
+    background: rgba(0, 20, 60, 0.85); /* Fundo azul translúcido */
+    border: 3px solid #00faff;
+    border-left: none; border-radius: 0 30px 30px 0;
+    box-shadow: 0 0 20px rgba(0, 250, 255, 0.2), inset 0 0 50px rgba(0, 100, 255, 0.3);
+    display: flex; flex-direction: column;
+    padding: 20px 30px;
+    color: #fff; position: relative;
+    background-image: 
+        linear-gradient(rgba(0, 250, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 250, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    overflow: hidden; 
+}
+
+/* Header Abas */
+.screen-header {
+    display: flex; justify-content: center; gap: 15px;
+    border-bottom: 1px solid rgba(0, 250, 255, 0.3);
+    padding-bottom: 10px; margin-bottom: 15px; flex-shrink: 0;
+}
+.tab {
+    font-size: 1.4rem; color: rgba(0, 250, 255, 0.4);
+    cursor: pointer; transition: 0.3s; padding: 5px 15px;
+    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
+}
+.tab.active, .tab:hover {
+    background: rgba(0, 250, 255, 0.2);
+    color: #00faff; text-shadow: 0 0 8px #00faff;
+}
+
+/* Corpo da Tela */
+.screen-body { display: flex; flex: 1; gap: 30px; overflow: hidden; }
+.panel-label {
+    color: #ffcc00; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 10px;
+    text-align: center; border-bottom: 2px solid #ffcc00; display: inline-block; width: 100%;
+    flex-shrink: 0;
+}
+
+/* --- COLUNA ESQUERDA: INVENTÁRIO --- */
+.panel-left { flex: 1.2; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.inventory-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: 60px; gap: 4px;
+    flex: 1; overflow-y: auto; margin-bottom: 10px; padding-right: 5px;
+}
+.inventory-grid::-webkit-scrollbar { width: 5px; }
+.inventory-grid::-webkit-scrollbar-thumb { background: #00faff; border-radius: 3px; }
+.inventory-grid::-webkit-scrollbar-track { background: rgba(0, 250, 255, 0.1); }
+
+.inv-slot {
+    background: rgba(0, 250, 255, 0.05);
+    border: 1px solid rgba(0, 250, 255, 0.2);
+    border-radius: 2px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.2rem; color: #fff; position: relative; height: 60px;
+}
+.inv-slot.filled {
+    background: rgba(0, 250, 255, 0.2);
+    box-shadow: inset 0 0 10px rgba(0, 250, 255, 0.3);
+    border-color: #00faff;
+}
+.inv-slot img {
+    width: 90%; height: 90%; object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(0, 250, 255, 0.5));
+    cursor: grab;
+}
+
+/* Controles de Fabricação */
+.fabricator-controls { flex-shrink: 0; margin-top: auto; }
+.fabricator-controls form { display: flex; flex-direction: column; gap: 5px; }
+.input-group { display: flex; gap: 5px; }
+
+.fabricator-controls input {
+    background: rgba(0,0,0,0.6); border: 1px solid #005577;
+    color: #fff; padding: 8px; flex: 1; border-radius: 4px; outline: none;
+}
+.fabricator-controls button {
+    background: #00faff; color: #000; border: none;
+    padding: 10px; font-weight: bold; cursor: pointer; border-radius: 4px;
+    text-transform: uppercase;
+}
+.fabricator-controls button:hover { background: #fff; box-shadow: 0 0 10px #00faff; }
+
+/* --- COLUNA DIREITA: EQUIPAMENTOS --- */
+.panel-right { flex: 0.8; position: relative; height: 100%; }
+.equipment-layout {
+    position: relative; width: 100%; height: 100%;
+}
+.slot-center-body {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 100px; height: 160px;
+    border: 2px solid rgba(0, 250, 255, 0.3); border-radius: 10px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 4rem; color: rgba(0, 250, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 250, 255, 0.1);
+}
+.slot-circle {
+    position: absolute; width: 50px; height: 50px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 250, 255, 0.4);
+    background: rgba(0, 20, 40, 0.6);
+    display: flex; justify-content: center; align-items: center;
+    color: rgba(0, 250, 255, 0.6); cursor: pointer; transition: 0.3s;
+}
+.slot-circle:hover { border-color: #00faff; color: #fff; box-shadow: 0 0 10px #00faff; }
+
+.drop-zone img {
+    width: 100%; height: 100%; object-fit: cover;
+    border-radius: 50%; z-index: 2; clip-path: circle(50%);
+}
+.slot-center-body img { border-radius: 8px; clip-path: none; }
+.drop-zone.has-item .placeholder-icon { display: none; }
+.drop-zone.has-item {
+    border-color: #00faff; box-shadow: 0 0 15px #00faff;
+    background: rgba(0, 250, 255, 0.1);
+}
+
+/* Posições Satélites */
+.slot-goggles { top: 30px; left: 50%; transform: translateX(-50%); }
+.slot-tank    { bottom: 30px; left: 50%; transform: translateX(-50%); }
+.slot-gloves  { top: 110px; left: 10px; }
+.slot-chip1   { top: 110px; right: 10px; }
+.slot-fins    { bottom: 110px; left: 10px; }
+.slot-chip2   { bottom: 110px; right: 10px; }
+
+/* --- HUD --- */
+.hud-container { position: absolute; bottom: 30px; right: 30px; z-index: 800; transform: scale(1.1); }
+.hud-cluster { position: relative; width: 160px; height: 160px; }
+.gauge { position: absolute; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; color: #fff; }
+.gauge.oxygen { width: 80px; height: 80px; top: 0; right: 0; z-index: 10; background: #002222; border: none; }
+.oxygen-fill { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: conic-gradient(#00ff00 var(--o2-percent, 100%), transparent 0); transition: 1s linear; }
+.inner-circle { position: absolute; top: 8px; bottom: 8px; left: 8px; right: 8px; background: #000; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.label { color: #00ff00; font-size: 0.8rem; } .value { font-size: 1.8rem; font-weight: bold; }
+.gauge.health { width: 45px; height: 45px; top: 20px; right: 90px; border-color: #ff4444; color: #ff4444; }
+.gauge.food   { width: 45px; height: 45px; top: 70px; right: 80px; border-color: #ffaa00; color: #ffaa00; }
+.gauge.water  { width: 45px; height: 45px; top: 90px; right: 30px; border-color: #00aaff; color: #00aaff; }
+
+
+/* ================= BOOT SCREEN (NOVO LOGO E LOADER CIRCULAR) ================= */
+#boot-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; z-index: 5000;
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'Rajdhani', sans-serif; /* Usar a fonte do PDA */
+    transition: opacity 1s ease-out;
+    color: #00faff; /* Cor padrão para textos */
+}
+.boot-complete { opacity: 0; pointer-events: none; }
+
+.boot-content { text-align: center; }
+
+.alterra-logo {
+    position: relative; /* Para posicionar o loader em volta */
+    width: 150px; height: 150px; /* Tamanho da área do logo + loader */
+    margin: 0 auto 30px auto;
+    display: flex; justify-content: center; align-items: center;
+}
+.alterra-logo img {
+    width: 120px; height: auto; /* Tamanho da imagem do logo */
+    animation: fadeIn 1s ease-in;
+    filter: drop-shadow(0 0 10px rgba(0, 250, 255, 0.5)); /* Efeito de brilho */
+}
+
+/* Carregador Circular */
+.circular-loader {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 3px solid transparent;
+    border-top-color: #00faff; /* Cor do carregador */
+    border-right-color: #00faff;
+    border-radius: 50%;
+    animation: spin 2s linear infinite, fadeIn 1s ease-in;
+    box-shadow: 0 0 15px rgba(0, 250, 255, 0.7); /* Brilho do loader */
+}
+
+.boot-text {
+    font-size: 1.2rem; margin-bottom: 20px; opacity: 0.8;
+    animation: blink 0.5s infinite alternate;
+}
+
+.boot-log { margin-top: 30px; }
+.boot-log p {
+    font-size: 0.9rem; color: #00faff; opacity: 0;
+    text-align: left; margin: 5px 0;
+    animation: typeLine 0.5s forwards;
+}
+.boot-log p:nth-child(1) { animation-delay: 0.5s; }
+.boot-log p:nth-child(2) { animation-delay: 1.5s; }
+.boot-log p:nth-child(3) { animation-delay: 2.5s; }
+
+/* Keyframes */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink { from { opacity: 1; } to { opacity: 0.5; } }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes typeLine { from { opacity: 0; transform: translateX(-10px); } to { opacity: 0.7; transform: translateX(0); } }

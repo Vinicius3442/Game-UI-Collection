@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jogo de Arrastar e Soltar - TI</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div id="tela-inicial">
+      <h1>LANGUAGES INVADERS</h1>
+
+      <h2 class="piscar">SELECT DIFFICULTY</h2>
+
+      <div class="container-botoes">
+        <button class="btn-nivel pixel-btn green" data-nivel="facil">
+          EASY
+        </button>
+        <button class="btn-nivel pixel-btn yellow" data-nivel="medio">
+          MEDIUM
+        </button>
+        <button class="btn-nivel pixel-btn red" data-nivel="dificil">
+          HARD
+        </button>
+      </div>
+
+      <div class="decoracao-chao">
+        <div
+          class="pixel-invader invader-1"
+          style="left: 15%; animation-delay: 0.5s"
+        ></div>
+        <div
+          class="pixel-invader invader-2"
+          style="left: 30%; animation-delay: 1s"
+        ></div>
+        <div
+          class="pixel-invader invader-3"
+          style="left: 45%; animation-delay: 0.2s"
+        ></div>
+        <div
+          class="pixel-invader invader-2"
+          style="left: 60%; animation-delay: 0.7s"
+        ></div>
+        <div
+          class="pixel-invader invader-1"
+          style="left: 75%; animation-delay: 0.3s"
+        ></div>
+      </div>
+
+      <div class="menu-footer">
+        <span>CREDITS 1</span>
+        <span id="high-score-display">HIGH SCORE: 0</span>
+        <span class="piscar">PRESS START &rarr;</span>
+      </div>
+    </div>
+
+    <div id="tela-jogo" class="escondido">
+      <header id="cabecalho-jogo">
+        <div class="info-placar">
+          <h3>SCORE:</h3>
+          <span id="placar">100</span>
+        </div>
+        <div id="combo-container">
+          <span id="combo-display"></span>
+        </div>
+        <button id="btn-reiniciar">RESTART</button>
+      </header>
+
+      <main class="container-jogo-arcade">
+        <div id="campo-de-batalha">
+          <div id="enxame-container"></div>
+          <div id="linha-perigo"></div>
+        </div>
+
+        <div class="container-categorias">
+          <div
+            id="cat-linguagens"
+            class="zona-drop categoria"
+            data-categoria="Linguagens de Programação"
+          >
+            <h4>Linguagens</h4>
+          </div>
+
+          <div
+            id="cat-frameworks"
+            class="zona-drop categoria"
+            data-categoria="Frameworks / Bibliotecas"
+          >
+            <h4>Frameworks</h4>
+          </div>
+
+          <div
+            id="cat-bd-relacional"
+            class="zona-drop categoria"
+            data-categoria="Banco de Dados Relacional"
+          >
+            <h4>DB Relacional</h4>
+          </div>
+
+          <div
+            id="cat-bd-nao-relacional"
+            class="zona-drop categoria"
+            data-categoria="Banco de Dados Não Relacional"
+          >
+            <h4>DB Não-Relacional</h4>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <audio id="audio-acerto" src="./audios/acerto.mp3"></audio>
+    <audio id="audio-erro" src="./audios/erro.mp3"></audio>
+    <audio id="audio-menu" src="./audios/menu.mp3" loop></audio>
+    <audio id="audio-vitoria" src="./audios/vitoria.mp3"></audio>
+    <audio id="audio-derrota" src="./audios/derrota.mp3"></audio>
+    <audio id="audio-musica" src="./audios/musica.mp3" loop></audio>
+
+    <div class="crt-overlay"></div>
+    <div id="estrelas-fundo"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

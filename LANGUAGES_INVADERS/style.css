@@ -1,0 +1,522 @@
+/* --- CONFIGURAÇÕES GLOBAIS - VERSÃO ARCADE --- */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* A FONTE É A ALMA DO ESTILO ARCADE */
+    font-family: 'Press Start 2P', cursive;
+}
+
+body {
+    background-color: #000; /* Fundo preto total */
+    color: #fff; /* Texto branco por padrão */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    
+    /* EFEITO DE SCANLINE (TELA CRT) */
+    background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.8),
+        rgba(0, 0, 0, 0.2) 50%,
+        rgba(0, 0, 0, 0.8)
+    );
+    background-size: 100% 4px; /* Tamanho das linhas */
+}
+
+/* Efeito de brilho (glow) para títulos */
+h1, h2, h3, h4 {
+    margin-bottom: 25px;
+    color: #00FFFF; /* Ciano Neon */
+    text-shadow: 
+        0 0 5px #00FFFF,
+        0 0 10px #00FFFF,
+        0 0 20px #00FFFF;
+}
+
+/* --- CLASSE DE CONTROLE --- */
+.escondido {
+    display: none !important; 
+}
+#tela-inicial {
+    text-align: center;
+    max-width: 800px; /* Mais largo */
+    width: 90vw;
+    padding: 40px;
+    border: 4px solid #00FFFF; /* Mantemos a borda neon */
+    background-color: rgba(0, 0, 0, 0.5); 
+    box-shadow: 
+        0 0 15px #00FFFF,
+        inset 0 0 15px #00FFFF;
+    position: relative;
+    overflow: hidden; 
+}
+
+/* Título 3D com text-shadow */
+#tela-inicial h1 {
+    font-size: 3.5rem; /* Maior */
+    color: #00BFFF; /* Azul claro */
+    text-shadow: 
+        0 0 15px #00FFFF,
+        0 4px 0 #104c91; /* Sombra 3D azul escura */
+    margin-bottom: 30px;
+    letter-spacing: 4px; /* Mais espaçado */
+}
+
+/* Subtítulo piscando (Reutilizando a classe) */
+#tela-inicial h2 {
+    color: #39FF14; /* Verde-Limão */
+    text-shadow: 0 0 5px #39FF14;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+}
+
+.piscar {
+    animation: blink 1.5s linear infinite; 
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* --- Botões Pixel "Chunky" --- */
+.container-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.pixel-btn {
+    /* Reset do botão antigo */
+    background-color: #555;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-shadow: 1px 1px 0 #000;
+    text-transform: uppercase;
+    
+    /* A Mágica do 3D: Sombra "grossa" */
+    box-shadow: 0 6px 0 #222; /* Sombra 3D */
+    position: relative;
+    top: 0;
+    
+    transition: all 0.1s ease-out;
+}
+
+/* Efeito de "apertar" o botão */
+.pixel-btn:active {
+    top: 4px; /* Move o botão para baixo */
+    box-shadow: 0 2px 0 #222; /* Diminui a sombra */
+}
+
+/* Cores dos botões */
+.pixel-btn.green {
+    background-color: #28a745;
+    border-color: #90ee90;
+    box-shadow: 0 6px 0 #155724;
+}
+.pixel-btn.green:active { top: 4px; box-shadow: 0 2px 0 #155724; }
+
+.pixel-btn.yellow {
+    background-color: #ffc107;
+    border-color: #fffacd;
+    box-shadow: 0 6px 0 #856404;
+}
+.pixel-btn.yellow:active { top: 4px; box-shadow: 0 2px 0 #856404; }
+
+.pixel-btn.red {
+    background-color: #dc3545;
+    border-color: #f08080;
+    box-shadow: 0 6px 0 #721c24;
+}
+.pixel-btn.red:active { top: 4px; box-shadow: 0 2px 0 #721c24; }
+
+
+/* --- Rodapé do Menu --- */
+.menu-footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 2px dashed #555;
+    margin-top: 40px;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.menu-footer .piscar {
+    color: #fff;
+    text-shadow: 0 0 5px #fff;
+}
+
+/* --- Decoração: Invasores (CSS Pixel Art) --- */
+.decoracao-chao {
+    position: absolute;
+    bottom: 80px; /* Acima do rodapé */
+    left: 0;
+    width: 100%;
+    height: 30px;
+}
+
+.pixel-invader {
+    position: absolute;
+    width: 5px; /* O "pixel" base */
+    height: 5px;
+    background: transparent;
+    
+    /* Animação sutil de "idle" (parado) */
+    animation: bounce 2s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+}
+
+/* "Desenhando" os invasores com box-shadow */
+/* Cada linha é uma fileira de pixels */
+.invader-1 { /* Verde */
+    box-shadow: 
+        0 0 0 #39FF14, 5px 0 0 #39FF14, 15px 0 0 #39FF14, 20px 0 0 #39FF14, /* Fila 1 */
+        5px 5px 0 #39FF14, 10px 5px 0 #39FF14, 15px 5px 0 #39FF14, /* Fila 2 */
+        0 10px 0 #39FF14, 5px 10px 0 #39FF14, 10px 10px 0 #39FF14, 15px 10px 0 #39FF14, 20px 10px 0 #39FF14, /* Fila 3 */
+        0 15px 0 #39FF14, 20px 15px 0 #39FF14; /* Fila 4 */
+}
+.invader-2 { /* Amarelo */
+    box-shadow: 
+        5px 0 0 #ffc107, 15px 0 0 #ffc107, /* Fila 1 */
+        0 5px 0 #ffc107, 5px 5px 0 #ffc107, 10px 5px 0 #ffc107, 15px 5px 0 #ffc107, 20px 5px 0 #ffc107, /* Fila 2 */
+        0 10px 0 #ffc107, 5px 10px 0 #ffc107, 10px 10px 0 #ffc107, 15px 10px 0 #ffc107, 20px 10px 0 #ffc107, /* Fila 3 */
+        0 15px 0 #ffc107, 20px 15px 0 #ffc107; /* Fila 4 */
+}
+.invader-3 { /* Vermelho */
+    box-shadow: 
+        10px 0 0 #dc3545, /* Fila 1 */
+        5px 5px 0 #dc3545, 15px 5px 0 #dc3545, /* Fila 2 */
+        0 10px 0 #dc3545, 5px 10px 0 #dc3545, 10px 10px 0 #dc3545, 15px 10px 0 #dc3545, 20px 10px 0 #dc3545, /* Fila 3 */
+        5px 15px 0 #dc3545, 10px 15px 0 #dc3545, 15px 15px 0 #dc3545; /* Fila 4 */
+}
+/* --- TELA 2: JOGO (ESTILO ARCADE) --- */
+
+#tela-jogo {
+    width: 90vw; /* Ocupa 90% da largura da tela */
+    max-width: 800px; /* Mas no máximo 800px */
+    height: 90vh; /* Ocupa 90% da altura da tela */
+    max-height: 1000px;
+
+    /* A mesma borda neon do menu */
+    border: 4px solid #00FFFF;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 
+        0 0 15px #00FFFF,
+        inset 0 0 15px #00FFFF;
+    
+    display: flex;
+    flex-direction: column; /* Organiza o layout verticalmente */
+}
+
+/* --- Cabeçalho (Score) --- */
+#cabecalho-jogo {
+    /* Removemos o <header> antigo */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 3px solid #00FFFF;
+    box-shadow: 0 5px 15px #00FFFF;
+    color: #FF00FF; /* Magenta */
+}
+
+#cabecalho-jogo h3 {
+    color: #FF00FF;
+    text-shadow: 0 0 5px #FF00FF;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+#placar {
+    font-size: 1.8rem;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+}
+
+#btn-reiniciar {
+    background-color: transparent;
+    color: #FF00FF;
+    border: 2px solid #FF00FF;
+    padding: 10px 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+#high-score-display {
+    color: #f0ad4e; /* Um tom de amarelo/laranja */
+    font-size: 0.9rem;
+    text-shadow: 0 0 5px #f0ad4e;
+}
+#btn-reiniciar:hover {
+    background-color: #FF00FF;
+    color: #000;
+    box-shadow: 0 0 15px #FF00FF;
+}#combo-container {
+    flex-grow: 1; /* Ocupa o espaço no meio */
+    text-align: center;
+}
+
+#combo-display {
+    font-size: 1.8rem;
+    color: #FF00FF; /* Magenta neon */
+    text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF;
+    
+    /* Prepara para a animação */
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.2s ease-out;
+}
+
+/* Classe que vamos adicionar/remover com JS para "estourar" o combo */
+#combo-display.active {
+    transform: scale(1);
+    opacity: 1;
+    animation: combo-pop 0.3s ease-out;
+}
+
+/* Animação de "pulo" */
+@keyframes combo-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); } /* Pula */
+    100% { transform: scale(1); } /* Volta */
+}
+/* --- Layout Principal do Jogo --- */
+.container-jogo-arcade {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Faz ocupar todo o espaço restante */
+    overflow: hidden; /* Garante que nada saia dos limites */
+    padding: 15px;
+}
+
+/* --- 1. CAMPO DE BATALHA (O CÉU) --- */
+#campo-de-batalha {
+    flex-grow: 1; /* Ocupa todo o espaço vertical disponível */
+    position: relative; /* ESSENCIAL: para posicionar os invasores */
+    overflow: hidden; /* Esconde invasores que aparecem "acima" da tela */
+    
+    /* Um "grid" sutil no fundo, como em jogos antigos */
+    background-image: 
+        linear-gradient(to right, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* --- 2. LINHA DE PERIGO (O CHÃO) --- */
+#linha-perigo {
+    position: absolute;
+    bottom: 10px; /* Fica 10px acima do fim do campo */
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #FF00FF; /* Magenta */
+    box-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF;
+    
+    /* Animação de pulsação */
+    animation: pulse-danger 1s infinite alternate;
+}
+
+@keyframes pulse-danger {
+    from { box-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF; }
+    to { box-shadow: 0 0 20px #d100d1, 0 0 40px #d100d1; }
+}
+
+
+/* --- 3. BASES DE DEFESA (ZONAS DE DROP) --- */
+.container-categorias {
+    display: flex; /* Agora é uma linha horizontal */
+    justify-content: space-around; /* Espaça igualmente */
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 2px dashed #39FF14; /* Linha verde de "base" */
+}
+
+.zona-drop.categoria {
+    flex-basis: 24%; /* Divide o espaço em 4 */
+    min-height: 80px; /* Altura da base */
+    border: 3px solid #39FF14; /* Verde-Limão */
+    background-color: rgba(57, 255, 20, 0.1); /* Fundo verde sutil */
+    box-shadow: 0 0 10px #39FF14, inset 0 0 10px #39FF14;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.zona-drop.categoria h4 {
+    color: #39FF14;
+    text-shadow: 0 0 5px #39FF14;
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 0;
+    pointer-events: none; /* Para não atrapalhar o drop */
+}
+
+/* Feedback de Hover na Base */
+.zona-drop.hover-valido {
+    background-color: rgba(57, 255, 20, 0.4);
+    transform: scale(1.05);
+}
+#enxame-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto; /* A largura será definida pelos invasores dentro dele */
+    display: grid;
+    /* Vamos definir as colunas no JS, mas o espaçamento é aqui */
+    gap: 10px;
+    padding: 5px;
+    
+    /* Usar transform é MUITO mais eficiente para mover */
+    transition: transform 0.2s linear;
+}
+
+/* Os invasores DENTRO do enxame */
+#enxame-container .item-arrastavel {
+    position: static; /* IMPORTANTE: Eles não são mais 'absolute' */
+    /* Eles ficam parados dentro do grid do enxame */
+}
+
+/* --- OS INVASORES (Itens Arrastáveis) --- */
+.item-arrastavel {
+    position: relative; /* Mudamos de 'static' para 'relative' */
+    width: 30px; /* Largura fixa para o pixel art */
+    height: 20px; /* Altura fixa para o pixel art */
+    cursor: grab;
+    user-select: none;
+    
+    /* Centraliza o texto e a arte */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    left: 50%; /* Posiciona o início do texto no meio do corpo */
+    transform: translateX(-50%); /* Puxa o texto 50% para a esquerda */
+    font-size: 0.7rem; /* Vamos diminuir um pouco a fonte */
+}
+
+/* O 'corpo' do invasor (o pixel art) */
+.item-arrastavel .invader-body {
+    /* Puxamos as classes .pixel-invader que já fizemos! */
+    width: 5px; /* O pixel base */
+    height: 5px;
+    background: transparent;
+}
+
+/* O 'nome' da tecnologia (o texto) */
+.item-arrastavel .invader-name {
+    position: absolute;
+    bottom: -20px; /* Posiciona o texto abaixo da arte */
+    width: max-content; /* Garante que o nome não quebre */
+    color: #fff;
+    font-size: 0.8rem;
+    text-shadow: 0 0 5px #fff;
+    padding: 2px 4px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 3px;
+    /* Impede o texto de atrapalhar o drag/drop */
+    pointer-events: none; 
+}
+
+.item-arrastavel.arrastando {
+    opacity: 0.8;
+    cursor: grabbing;
+    transform: scale(1.1);
+    z-index: 1000; /* Garante que fique na frente de tudo ao arrastar */
+}
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Camada 1: Scanlines (as que já tínhamos) */
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px; /* Linhas mais finas */
+    
+    /* Camada 2: Vignette (Bordas escuras da tela) */
+    box-shadow: inset 0 0 150px 50px rgba(0,0,0,0.5);
+    
+    /* Camada 3: Flicker (Tremulação) */
+    animation: flicker 0.1s infinite alternate;
+    
+    z-index: 100; /* Fica em cima de tudo */
+    pointer-events: none; /* Mas não bloqueia o mouse */
+    opacity: 0.6; /* Sutil */
+}
+
+@keyframes flicker {
+    from { opacity: 0.5; }
+    to { opacity: 0.6; }
+}
+
+/* O Fundo de Estrelas (Paralaxe) */
+#estrelas-fundo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: -10; /* Fica atrás de tudo */
+    overflow: hidden;
+}
+
+/* Vamos gerar as estrelas com JS, mas o estilo é aqui */
+.estrela {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    
+    /* Animação de descida (paralaxe) */
+    animation-name: parallax-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* 3 tamanhos/velocidades de estrelas */
+.estrela.p { /* Pequena */
+    width: 1px;
+    height: 1px;
+    opacity: 0.5;
+    animation-duration: 10s; /* Lenta */
+}
+.estrela.m { /* Média */
+    width: 2px;
+    height: 2px;
+    opacity: 0.8;
+    animation-duration: 5s; /* Média */
+}
+.estrela.g { /* Grande */
+    width: 3px;
+    height: 3px;
+    animation-duration: 2s; /* Rápida */
+}
+
+@keyframes parallax-fall {
+    from {
+        transform: translateY(-20px); /* Começa fora da tela (em cima) */
+    }
+    to {
+        transform: translateY(100vh); /* Termina fora da tela (embaixo) */
+    }
+}

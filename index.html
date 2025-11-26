@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Portfolio System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+    <div class="cabinet-frame">
+        <div class="screen-bezel">
+            <!-- Camada de efeitos de tela -->
+            <div class="crt-overlay"></div>
+            <div class="scanlines"></div>
+            <div class="screen-glare"></div>
+            
+            <!-- Conteúdo da Tela -->
+            <div class="screen-content">
+                
+                <!-- Fundo Grid Animado -->
+                <div class="retro-grid"></div>
+
+                <!-- HUD Superior (Como na imagem) -->
+                <div class="hud-top">
+                    <div class="score-block">
+                        <span>1UP</span>
+                        <span class="score-val blinking">00</span>
+                    </div>
+                    <div class="score-block center">
+                        <span>HI-SCORE</span>
+                        <span class="score-val">0012571</span>
+                    </div>
+                    <div class="score-block">
+                        <span>2UP</span>
+                        <span class="score-val">00</span>
+                    </div>
+                </div>
+
+                <div class="sprite-layer top-layer">
+                    <div class="pac-wrap">
+                        <div class="ghost"></div>
+                        <div class="pacman"></div>
+                    </div>
+                </div>
+
+                <div class="sprite-layer right-layer">
+                    <div class="centipede-container">
+                        <div class="c-head"></div>
+                        <div class="c-body b1"></div>
+                        <div class="c-body b2"></div>
+                        <div class="c-body b3"></div>
+                    </div>
+                </div>
+
+                <main class="main-menu">
+                    <h1 class="game-logo" data-text="START GAME">START GAME</h1>
+                    
+                    <ul class="game-options" id="gameList">
+                        <li class="option-item active" data-link="MVC_Gerenciador_fallout/Front-end_version/index.html">
+                            FALLOUT MVC
+                        </li>
+                        <li class="option-item" data-link="MVC_Subnautica/index.html">
+                            SUBNAUTICA MVC
+                        </li>
+                        <li class="option-item" data-link="LANGUAGES_INVADERS/index.html">
+                            LANGUAGES INVADERS
+                        </li>
+                    </ul>
+                </main>
+
+                <div class="sprite-layer bottom-layer">
+                    <div class="barrel">DK</div>
+                </div>
+                <div class="hud-bottom">
+                    <span>CREDIT 001</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const items = document.querySelectorAll('.option-item');
+        let currentIndex = 0;
+
+        function updateSelection() {
+            items.forEach((item, index) => {
+                if (index === currentIndex) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
+                updateSelection();
+            } else if (e.key === 'ArrowDown') {
+                currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+                updateSelection();
+            } else if (e.key === 'Enter') {
+                const selectedItem = items[currentIndex];
+                const link = selectedItem.getAttribute('data-link');
+                
+                selectedItem.style.animation = "blink-fast 0.2s infinite";
+                document.querySelector('.game-logo').style.textShadow = "0 0 50px #fff, 0 0 20px #ff00de";
+                
+                setTimeout(() => {
+                    if(link) window.location.href = link;
+                    else alert("Link indisponível na demo.");
+                    selectedItem.style.animation = "";
+                }, 800);
+            }
+        });
+    </script>
+</body>
+</html>
