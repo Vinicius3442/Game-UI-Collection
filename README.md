@@ -10,6 +10,14 @@
 ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 
+<br>
+
+[![PLAY ONLINE](https://img.shields.io/badge/🕹️_JOGAR_AGORA-00C853?style=for-the-badge&logoColor=white)](https://vinicius3442.github.io/Game-UI-Collection/)
+
+> **Link direto:** [vinicius3442.github.io/Game-UI-Collection](https://vinicius3442.github.io/Game-UI-Collection/)
+
+<br>
+
 > **Uma coleção de interfaces web interativas e sistemas de gerenciamento (CRUD) baseados na estética de jogos clássicos e modernos.**
 
 ## Sobre o Projeto
