@@ -72,7 +72,7 @@ Um jogo interativo estilo "Space Invaders" focado em tecnologias.
 
 ---
 
-## 📂 Estrutura de Pastas
+## Estrutura de Pastas
 
 ```bash
 Game-UI-Collection/
